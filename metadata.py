@@ -1,6 +1,7 @@
 import re
 import json
 import os
+import sys
 
 # the function read each line and return metadata as key and value
 def get_metadata_in_one_line(line):
@@ -16,16 +17,19 @@ def get_file_information(path, file):
     return fileExtention, folderName
 
 def eModul_metadata(filePath, fileName ):
-    data = open(r"{}\{}".format(filePath,fileName),'r')
+    if sys.platform == 'windows':
+        data = open(r"{}\{}".format(filePath,fileName),encoding="utf8", errors='ignore')
+    else:
+        data = open(r"{}/{}".format(filePath,fileName),encoding="utf8", errors='ignore')
     # get type of the file and name of base folder
     fileExtention, experimentName = get_file_information(filePath, fileName)
 
     if fileExtention == '.dat':
-        fileExtention = 'DATFILE'
+        fileExtention = 'DATFile'
     elif fileExtention == '.csv':
         fileExtention = 'CSVFile'
     elif fileExtention == '.cad':
-        fileExtention = 'CADFILE'
+        fileExtention = 'CADFile'
     else:
         fileExtention = 'DocumentFile'
 
